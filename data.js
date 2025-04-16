@@ -2,40 +2,104 @@
 import { LandscapeSchema } from '@localfirstfm/landscape-schema'
 
 export const data = LandscapeSchema.make({
-	Version: 1,
-	Id: 'supersync',
-	Name: 'SuperSync',
-	Description: 'A cool way to sync data',
-	Website: 'https://supersync.cool',
-	Deployment: ['Self-hosted'],
-	License: 'MIT',
-	AppTarget: {
-		LanguageSDK: { data: ['typescript'] },
-	},
-	Networking: {
-		Topology: { data: 'Client-Server' },
-	},
-	ServerSideData: {
-		PersistenceMechanism: { data: ['N/A'] },
-		DataModelParadigm: { data: 'Relational' },
-	},
-	ClientSideData: {
-		QueryAPI: { data: ['Async'] },
-		PersistenceMechanism: { data: ['IndexedDB', 'OPFS'] },
-		PersistenceFeatures: { data: 'Indexes' },
-		DataModel: { data: 'Document' },
-		OfflineReads: { data: 'Full Support' },
-		OfflineWrites: { data: 'Local conflict resolution' },
-		DataSize: { data: 'Up to 5-10 MB per document' },
-	},
-	SynchronizationStrategy: {
-		FullOrPartialReplication: { data: ['Full Replication'] },
-		ConflictHandling: { data: 'Automatic via CRDT' },
-		WhereResolutionOccurs: { data: 'Client' },
-		WhatGetsSynced: {
-			data: {
-				ClientToClient: 'Ops',
-			},
-		},
-	},
+  Version: 1,
+  Id: 'electricsql',
+  Name: 'ElectricSQL',
+  Website: 'https://electric-sql.com',
+  License: 'Apache 2.0',
+  Deployment: ['Self-hosted', 'Hosted'],
+  AppTarget: {
+    Platform: {
+      data: [
+        'Browser',
+        'React Native',
+        'iOS',
+        'Android',
+        'macOS',
+        'WASM',
+        'Linux',
+        'Node',
+        'Javascript',
+        'Typescript',
+        'Elixir'
+      ]
+    }
+  },
+  ServerSideData: {
+    PersistenceMechanism: {
+      data: ['Postgres']
+    },
+    DataModelParadigm: {
+      data: 'Relational'
+    }
+  },
+  ClientSideData: {
+    PersistenceMechanism: {
+      data: [
+        'In-Memory',
+        'Browser File Cache',
+        'Localstorage',
+        'IndexedDB',
+        'OPFS',
+        'SQLite',
+        'PGLite',
+        'React Query',
+        'TanStack Optimistic',
+        'Cloudflare Durable Object Storage',
+        'Cloudflare D1',
+        'Redis',
+        'Custom',
+      ],
+      comment: `
+        Electric syncs data out of Postgres into anything you like.
+        From an in-memory state variable to a local embedded database.
+      `
+    },
+    DataModel: {
+      data: 'Log, Object or relational',
+      comment: `
+        Data syncs in as a log of logical change operations.
+        These can be materialized as collections of rows,
+        or into an embedded database as relations in tables.
+      `
+    },
+    OfflineReads: {
+      data: 'Full Support',
+      comment: 'Full support when shape is synced.'
+    },
+    DataSize: {
+      data: 'Limited by size of hard drive'
+    }
+  },
+  SynchronizationStrategy: {
+    FullOrPartialReplication: {
+      data: ['Partial Replication'],
+      comment: 'Partial replication via shapes.'
+    },
+    ConflictHandling: {
+      data: 'Flexible',
+      comment: `
+        Electric handles read-path sync. It doesn't prescribe a solution for writes
+        and thus avoids handling conflicts. It does provide documented patterns
+        and framework integrations for handling writes and optimistic state.
+        These implement a range of strategies for conflict handling.
+      `
+    },
+    WhereResolutionOccurs: {
+      data: 'Server'
+    },
+    WhatGetsSynced: {
+      data: {
+        ServerToClient: `
+          Shape logs, in the form of a stream of change messages
+          (inserts, updates and deletes) and control messages
+          (up-to-date, must-refetch).
+        `
+      }
+    },
+    Authority: {
+      data: 'Centralized',
+      comment: `Postgres is the source of truth, durability and total order.`
+    }
+  }
 })
